@@ -2,9 +2,6 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart' as EsysFlutterShare;
 
-//String lol = '${submission.url}';
-//NetworkImage networkImage = NetworkImage(lol);
-
 class ShareMeme {
   String memeUrl;
 

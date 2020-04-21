@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'memePage.dart';
-import 'redditAPI.dart';
+import 'package:politicalmemes/choicePage.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MemePage(),
+      home: ChoicePage(),
     );
   }
 }

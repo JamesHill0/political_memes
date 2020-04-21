@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:draw/draw.dart';
+import 'memePage.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class MemeList extends StatefulWidget {
   @override
@@ -8,7 +10,7 @@ class MemeList extends StatefulWidget {
 }
 
 class _MemeListState extends State<MemeList> {
-  List<String> memeList = [];
+  List<NetworkImage> memeList = [];
 
   void reddit() async {
     Reddit reddit = await Reddit.createScriptInstance(
@@ -27,7 +29,17 @@ class _MemeListState extends State<MemeList> {
 
     submissionStream.listen((submission) {
       setState(() {
-        memeList.add(submission.url.toString());
+        memeList.add(NetworkImage(submission.url.toString()));
+        if (memeList.length == 3) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return MemePage(
+                memeList: memeList,
+              );
+            }),
+          );
+        }
       });
     });
   }
@@ -38,7 +50,17 @@ class _MemeListState extends State<MemeList> {
     reddit();
   }
 
+  @override
   Widget build(BuildContext context) {
-    return Container(child: Text("${memeList.length}"));
+    return Scaffold(
+      backgroundColor: Colors.grey[800],
+      body: Center(
+        child: SpinKitFadingCircle(
+          color: Colors.white,
+          size: 100.0,
+          duration: Duration(seconds: 1),
+        ),
+      ),
+    );
   }
 }
