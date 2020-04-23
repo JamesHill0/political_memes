@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'redditAPI.dart';
+import 'loadingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChoicePage extends StatefulWidget {
@@ -20,9 +20,21 @@ class _ChoicePageState extends State<ChoicePage> {
     );
   }
 
+  void getOrientation() async {
+    int orientation = await (_read());
+    if (orientation == 1) {
+      loadingPage();
+    } else if (orientation == -1) {
+      loadingPage();
+    } else {
+      print("You havn't chosen yet");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    getOrientation();
   }
 
   @override
@@ -32,8 +44,8 @@ class _ChoicePageState extends State<ChoicePage> {
         Expanded(
           child: GestureDetector(
             onTap: () {
-//              _save();
-//              _read();
+              _savePoliticalOrientation(-1);
+              _read();
               loadingPage();
             },
             child: Container(
@@ -47,7 +59,7 @@ class _ChoicePageState extends State<ChoicePage> {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              _save();
+              _savePoliticalOrientation(1);
               _read();
               loadingPage();
             },
@@ -64,20 +76,24 @@ class _ChoicePageState extends State<ChoicePage> {
   }
 }
 
-_save() async {
-  print("HELLO");
+_savePoliticalOrientation(orientation) async {
   final prefs = await SharedPreferences.getInstance();
-  final key = 'my_int_key';
-  final value = 42;
+  final key = 'politics';
+  final value = orientation;
   prefs.setInt(key, value);
-  print('saved $value');
 }
 
-_read() async {
+Future<int> _read() async {
   final prefs = await SharedPreferences.getInstance();
-  print("IS IT ME YOU ARE LOOKING FOR");
 
-  final key = 'my_int_key';
+  final key = 'politics';
   final value = prefs.getInt(key) ?? 0;
-  print('read: $value');
+  if (value == 1) {
+    print("You are a democrat");
+  } else if (value == -1) {
+    print("You are a republican");
+  } else {
+    print("You havn't chosen yet");
+  }
+  return value;
 }

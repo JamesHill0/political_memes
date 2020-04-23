@@ -13,24 +13,22 @@ class MemeCarousel extends StatefulWidget {
 
 class _MemeCarouselState extends State<MemeCarousel> {
   List<NetworkImage> memeList;
-  int index = 0;
+  static int index = 0;
 
   Function getCurrent = (int prev, int current) {
-//    index = current;
+    index = current;
+    print(index);
     return current;
   };
 
   @override
   void initState() {
     memeList = widget.memeList;
-//    index = getCurrent();
     super.initState();
-    print(index);
   }
 
   @override
   Widget build(BuildContext context) {
-//    return CarouselSlider(items: null, options: null)
     return Carousel(
       images: memeList,
       showIndicator: false,

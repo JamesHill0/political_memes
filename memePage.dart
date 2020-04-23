@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'share.dart';
-import 'carouselBuilder.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 
 class MemePage extends StatefulWidget {
   MemePage({this.memeList});
@@ -12,14 +12,8 @@ class MemePage extends StatefulWidget {
 }
 
 class _MemePageState extends State<MemePage> {
-  ShareMeme shareMeme = ShareMeme();
-  SaveMeme saveMeme = SaveMeme();
-  String memeUrl = 'https://i.redd.it/pze4ccdypkt41.png';
-
-  MemeCarousel getMemeCarousel() {
-    MemeCarousel memeCarousel = MemeCarousel(memeList: widget.memeList);
-    return memeCarousel;
-  }
+  static String memeUrl;
+  static int index = 0;
 
   @override
   void initState() {
@@ -35,7 +29,23 @@ class _MemePageState extends State<MemePage> {
           Expanded(
             child: Container(
               margin: EdgeInsets.only(top: 10),
-              child: getMemeCarousel(),
+              child: Carousel(
+                images: widget.memeList,
+                showIndicator: false,
+                borderRadius: true,
+                boxFit: BoxFit.contain,
+                moveIndicatorFromBottom: 180.0,
+                noRadiusForIndicator: true,
+                autoplay: false,
+                onImageChange: (int a, int b) {
+                  setState(
+                    () {
+                      index = b;
+                      memeUrl = widget.memeList[index].url;
+                    },
+                  );
+                },
+              ),
             ),
           ),
           Padding(
@@ -45,13 +55,13 @@ class _MemePageState extends State<MemePage> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
-                    saveMeme.saveMeme(memeUrl);
+                    saveMeme(memeUrl);
                   },
                   icon: Icon(Icons.file_download, color: Colors.white),
                 ),
                 IconButton(
                   onPressed: () {
-                    shareMeme.shareMeme(memeUrl);
+                    shareMeme(memeUrl);
                   },
                   icon: Icon(
                     Icons.share,
